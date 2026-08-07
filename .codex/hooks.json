@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/save_log.mjs --tool codex",
+            "commandWindows": "node tools\\save_log.mjs --tool codex",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
