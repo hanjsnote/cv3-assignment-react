@@ -32,20 +32,43 @@ function App() {
     }
   }, [broadcasts])
 
+  // null, undefined, 빈 문자열인 값은 표에서 '-'로 통일해 누락 값을 명확히 표시합니다.
+  const displayValue = (value) => (value === null || value === undefined || value === '' ? '-' : value)
+
   return (
     <>
       <h1>CV3 Assignment</h1>
 
-      <p>방송 개수 : {broadcasts?.list?.length || 0}</p>
+      <p>방송 개수: {broadcasts?.list?.length || 0}</p>
 
-      {broadcasts?.list?.map((broadcast) => (
-        <p key={broadcast.labang_id}>
-          {broadcast.labang_datetime_start} |
-          {broadcast.labang_title} |
-          {broadcast.category || '카테고리 없음'}        
-        </p>
-      ))}
-    </> 
+      {/* 방송별 정보를 같은 열에 맞춰 비교할 수 있도록 p 태그 대신 표로 출력합니다. */}
+      <table>
+        <thead>
+          <tr>
+            <th>방송시간</th>
+            <th>방송정보</th>
+            <th>분류</th>
+            <th>조회수</th>
+            <th>판매량</th>
+            <th>매출액</th>
+            <th>상품수</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(broadcasts?.list ?? []).map((broadcast) => (
+            <tr key={broadcast.labang_id}>
+              <td>{displayValue(broadcast.labang_datetime_start)}</td>
+              <td>{displayValue(broadcast.labang_title)}</td>
+              <td>{displayValue(broadcast.category)}</td>
+              <td>{displayValue(broadcast.visit_cnt)}</td>
+              <td>{displayValue(broadcast.sales_cnt)}</td>
+              <td>{displayValue(broadcast.sales_amt)}</td>
+              <td>{displayValue(broadcast.product_cnt)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   )
 }
 
