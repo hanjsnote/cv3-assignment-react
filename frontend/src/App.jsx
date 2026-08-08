@@ -32,7 +32,21 @@ function App() {
     }
   }, [broadcasts])
 
-  return <h1>CV3 Assignment</h1>
+  return (
+    <>
+      <h1>CV3 Assignment</h1>
+
+      <p>방송 개수 : {broadcasts?.list?.length || 0}</p>
+
+      {broadcasts?.list?.map((broadcast) => (
+        <p key={broadcast.labang_id}>
+          {broadcast.labang_datetime_start} |
+          {broadcast.labang_title} |
+          {broadcast.category || '카테고리 없음'}        
+        </p>
+      ))}
+    </> 
+  )
 }
 
 export default App
