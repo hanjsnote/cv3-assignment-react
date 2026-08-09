@@ -61,7 +61,8 @@ app.get("/api/list", async (req, res) => {
                     visit_cnt: broadcast.visit_cnt,
                     sales_cnt: broadcast.sales_cnt,
                     sales_amt: broadcast.sales_amt,
-                    product_cnt: broadcast.item_cnt
+                    product_cnt: broadcast.item_cnt,
+                    status: broadcast.status
                 };
             }
 
@@ -74,7 +75,8 @@ app.get("/api/list", async (req, res) => {
                 visit_cnt: broadcast.visit_cnt,
                 sales_cnt: broadcast.sales_cnt,
                 sales_amt: broadcast.sales_amt,
-                product_cnt: broadcast.product_cnt
+                product_cnt: broadcast.product_cnt,
+                status: broadcast.status
             }
         });
 

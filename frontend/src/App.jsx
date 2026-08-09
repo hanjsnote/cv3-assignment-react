@@ -1,6 +1,41 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
+function getBroadcastStatus(status) {
+  if (status === 0) {
+    return {
+      label: '라이브중',
+      symbol: '🔴'
+    }
+  }
+
+  if (status === 1) {
+    return {
+      label: '정상종료',
+      symbol: '🟢'
+    }
+  }
+
+  if (status === 2) {
+    return {
+      label: '지연/취소',
+      symbol: '🟡'
+    }
+  }
+
+  if (status === null) {
+    return {
+      label: '기록없음',
+      symbol: '⚫'
+    }
+  }
+
+  return {
+    label: '-',
+    symbol: ''
+  }
+}
+
 function parseBroadcastTime(datetime) {
   if (datetime.length === 12) {
     return new Date(
@@ -92,10 +127,16 @@ function App() {
     <>
       <h1>CV3 Assignment</h1>
 
-      <p>방송 개수: {broadcasts?.list?.length || 0}</p>
       <div>
         <button onClick={() => setType('lb')}>라방</button>
         <button onClick={() => setType('hs')}>홈쇼핑</button>
+      </div>
+
+      <div>
+        🔴 라이브중
+        🟢 정상종료
+        🟡 지연/취소
+        ⚫ 기록없음
       </div>
 
       {/* 방송별 정보를 같은 열에 맞춰 비교할 수 있도록 p 태그 대신 표로 출력합니다. */}
@@ -114,7 +155,11 @@ function App() {
         <tbody>
           {getVisibleBroadcasts(broadcasts?.list ?? []).map((broadcast) => (
             <tr key={broadcast.id}>
-              <td>{displayValue(formatBroadcastTime(broadcast.datetime_start, type))}</td>
+              <td>
+                {getBroadcastStatus(broadcast.status).symbol}
+                {' '}
+                {displayValue(formatBroadcastTime(broadcast.datetime_start, type))}
+              </td>
               <td>{displayValue(broadcast.title)}</td>
               <td>{displayValue(broadcast.category)}</td>
               <td>{displayValue(broadcast.visit_cnt)}</td>
