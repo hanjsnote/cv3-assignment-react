@@ -21,7 +21,7 @@ function getScheduleDate() {
 app.get("/api/list", async (req, res) => {
     const type = req.query.type;
 
-    if (type !== "lb" && type != "hs") {
+    if (type !== "lb" && type !== "hs") {
         return res.status(400).json({
             error: {
                 code: "INVALID_TYPE",
@@ -49,14 +49,35 @@ app.get("/api/list", async (req, res) => {
         const schedule = scheduleResponse.data;
         const categories = gnbResponse.data.cats;
 
-        // GNB의 cats는 pid를 키로 사용하므로, 각 방송의 pid에서 카테고리 이름을 바로 찾습니다.
-        // 일치하는 카테고리가 없어도 방송 목록은 유지할 수 있도록 null을 반환합니다.
-        const list = schedule.list.map((broadcast) => ({
-            ...broadcast,
-            category: categories[String(broadcast.pid)]?.name ?? null,
-        }));
+        // lb과 hs API의 응답 데이터 구조를 프론트엔드에서 사용하기 편한 형태로 통합합니다.
+        const list = schedule.list.map((broadcast) => {
+            if (type === "hs") {
+                return {
+                    id: broadcast.hsshow_id,
+                    datetime_start: broadcast.hsshow_datetime_start,
+                    title: broadcast.hsshow_title,
+                    category: broadcast.cat?.cat_name ?? null,
+                    visit_cnt: broadcast.visit_cnt,
+                    sales_cnt: broadcast.sales_cnt,
+                    sales_amt: broadcast.sales_amt,
+                    product_cnt: broadcast.item_cnt
+                };
+            }
+
+            return {
+                id: broadcast.labang_id,
+                datetime_start:broadcast.labang_datetime_start,
+                title: broadcast.labang_title,
+                category: categories[String(broadcast.pid)]?.name ?? null,
+                visit_cnt: broadcast.visit_cnt,
+                sales_cnt: broadcast.sales_cnt,
+                sales_amt: broadcast.sales_amt,
+                product_cnt: broadcast.product_cnt
+            }
+        });
 
         return res.json({ ...schedule, list });
+
     } catch (error) {
         if (axios.isAxiosError(error)) {
             if (error.code === "ECONNABORTED" || error.code === "ETIMEDOUT") {
