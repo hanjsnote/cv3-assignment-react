@@ -36,36 +36,8 @@ function getBroadcastStatus(status) {
   }
 }
 
-function parseBroadcastTime(datetime) {
-  if (datetime.length === 12) {
-    return new Date(
-      Number(datetime.slice(0, 4)),
-      Number(datetime.slice(4, 6)) - 1,
-      Number(datetime.slice(6, 8)),
-      Number(datetime.slice(8, 10)),
-      Number(datetime.slice(10, 12))
-    )
-  } 
-
-  return new Date(
-    2000 + Number(datetime.slice(0, 2)),
-    Number(datetime.slice(2, 4)) - 1,
-    Number(datetime.slice(4, 6)),
-    Number(datetime.slice(6, 8)),
-    Number(datetime.slice(8, 10))
-  )
-}
-
 function getVisibleBroadcasts(list) {
-  const now = new Date()
-
-  const upcoming = list.filter((broadcast) => {
-    const end = parseBroadcastTime(broadcast.datetime_end)
-
-    return end > now
-  })
-
-  return upcoming.slice(0, 10)
+  return list.slice(0, 10)
 }
 
 function formatBroadcastTime(datetime, type) {
