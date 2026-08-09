@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
+function formatBroadcastTime(datetime) {
+  const year = datetime.slice(0, 2)
+  const month = datetime.slice(2, 4)
+  const day = datetime.slice(4, 6)
+  const hour = datetime.slice(6, 8)
+  const minute = datetime.slice(8, 10)
+
+  return year + '.' + month + '.' + day + ' ' + hour + ':' + minute
+}
+
 function App() {
   // 방송 목록 API의 응답 데이터를 저장합니다.
   const [broadcasts, setBroadcasts] = useState(null)
@@ -57,7 +67,7 @@ function App() {
         <tbody>
           {(broadcasts?.list ?? []).map((broadcast) => (
             <tr key={broadcast.labang_id}>
-              <td>{displayValue(broadcast.labang_datetime_start)}</td>
+              <td>{displayValue(formatBroadcastTime(broadcast.labang_datetime_start))}</td>
               <td>{displayValue(broadcast.labang_title)}</td>
               <td>{displayValue(broadcast.category)}</td>
               <td>{displayValue(broadcast.visit_cnt)}</td>
