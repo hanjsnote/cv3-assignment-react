@@ -55,6 +55,7 @@ app.get("/api/list", async (req, res) => {
                 return {
                     id: broadcast.hsshow_id,
                     datetime_start: broadcast.hsshow_datetime_start,
+                    datetime_end: broadcast.hsshow_datetime_end,
                     title: broadcast.hsshow_title,
                     category: broadcast.cat?.cat_name ?? null,
                     visit_cnt: broadcast.visit_cnt,
@@ -67,6 +68,7 @@ app.get("/api/list", async (req, res) => {
             return {
                 id: broadcast.labang_id,
                 datetime_start:broadcast.labang_datetime_start,
+                datetime_end: broadcast.labang_datetime_end,
                 title: broadcast.labang_title,
                 category: categories[String(broadcast.pid)]?.name ?? null,
                 visit_cnt: broadcast.visit_cnt,
