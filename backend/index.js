@@ -2,7 +2,6 @@ const express = require("express");
 const axios = require("axios");
 
 const app = express();
-const SCHEDULE_API_URL = "https://live.ecomm-data.com/api/schedule/list";
 const GNB_API_URL = "https://live.ecomm-data.com/api/home/gnb";
 const REQUEST_TIMEOUT_MS = 10_000;
 
@@ -20,6 +19,22 @@ function getScheduleDate() {
 }
 
 app.get("/api/list", async (req, res) => {
+    const type = req.query.type;
+
+    if (type !== "lb" && type != "hs") {
+        return res.status(400).json({
+            error: {
+                code: "INVALID_TYPE",
+                message: "type must be 'lb' or 'hs'.",
+            },
+        });
+    }
+
+    const SCHEDULE_API_URL = 
+        type === "hs"
+            ? "https://live.ecomm-data.com/api/schedule/list_hs"
+            : "https://live.ecomm-data.com/api/schedule/list";
+
     try {
         // 서로 의존하지 않는 외부 요청을 병렬로 실행해 응답 대기 시간을 줄입니다.
         const [scheduleResponse, gnbResponse] = await Promise.all([
